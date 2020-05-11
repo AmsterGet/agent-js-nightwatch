@@ -1,0 +1,19 @@
+name: release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Calculate version type
+          id: calculate-version
+          uses: amsterget/get-version-action@v1
+      - name: Bump version
+          run: |
+            echo "The version type is ${{ steps.calculate-version.outputs.versionType }}"
+            npm version ${{ steps.calculate-version.outputs.versionType }}
+
