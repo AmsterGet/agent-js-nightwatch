@@ -12,9 +12,6 @@ screenshots/
 # logs
 *.log
 
-# private
-rp.json
-
 # compiled
 /build
 /coverage
