@@ -1,4 +1,4 @@
-name: npm-publish
+name: publish
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  npm-publish:
+  publish-to-npm:
 
     runs-on: ubuntu-latest
 
