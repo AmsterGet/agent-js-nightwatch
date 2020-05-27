@@ -15,11 +15,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-          - name: Clean install of node dependencies
-            run: npm ci
+      - name: Clean install of node dependencies
+        run: npm ci
       - name: Calculate version type
         id: calculateVersion
-        uses: amsterget/get-version-action@v1
+        uses: amsterget/get-version-action@v2
       - name: Bump version
         run: |
           echo "The version type is ${{ steps.calculateVersion.outputs.versionType }}"
