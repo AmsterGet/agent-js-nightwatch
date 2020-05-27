@@ -21,6 +21,7 @@ jobs:
           read -r version<VERSION
           echo $version
           echo "::set-output name=version::$version"
+          echo "::set-output name=changes::see"
       - name: Create tag
         run: |
           git config --global user.email "amsterget@gmail.com"
@@ -31,7 +32,16 @@ jobs:
           git tag -a v${{steps.calculateVersion.outputs.version}} -m ${{steps.calculateVersion.outputs.version}}
           npm version from-git
           git push origin master ${version}
-          git checkout develop
-          git merge master
-          npm version patch
-          git push origin develop
+      - name: Create Release
+        id: createRelease
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{steps.calculateVersion.outputs.version}}
+          release_name: Release v${{steps.calculateVersion.outputs.version}}
+          body: |
+            Changes:
+            ${{steps.calculateVersion.outputs.changes}}
+          draft: false
+          prerelease: false
