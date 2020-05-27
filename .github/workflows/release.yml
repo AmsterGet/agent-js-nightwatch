@@ -18,6 +18,17 @@ jobs:
       - name: Calculate version
         id: calculateVersion
         run: |
-          version=cat VERSION
+          read -r version<VERSION
           echo $version
-
+      - name: Create tag
+        run: |
+          git config --global user.email "amsterget@gmail.com"
+          git config --global user.name "AmsterGet"
+          git remote set-url origin https://${{secrets.GITHUB_TOKEN}}@github.com/AmsterGet/agent-js-nightwatch
+          git tag "v$version"
+          npm version from-git
+          git push origin master ${version}
+          git checkout develop
+          git merge master
+          npm version patch
+          git push origin develop
