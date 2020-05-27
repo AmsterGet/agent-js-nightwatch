@@ -9,6 +9,14 @@ jobs:
   bump-version:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          - name: Clean install of node dependencies
+            run: npm ci
       - name: Calculate version type
         id: calculateVersion
         uses: amsterget/get-version-action@v1
