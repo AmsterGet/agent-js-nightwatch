@@ -18,6 +18,6 @@ jobs:
       - name: Calculate version
         id: calculateVersion
         run: |
-          version=\$(cat VERSION)
+          version=cat VERSION
           echo $version
 
