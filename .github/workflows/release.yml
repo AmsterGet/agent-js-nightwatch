@@ -1,12 +1,12 @@
 name: release
 
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+    types: [closed]
 
 jobs:
   bump-version:
+    if: github.event.pull_request.base.ref == 'master' && github.event.pull_request.merged == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
