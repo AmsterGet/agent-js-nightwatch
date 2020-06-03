@@ -75,10 +75,13 @@ jobs:
           version-fragment: 'bug'
       - name: Update develop with snapshot version
         run: |
-          git fetch
+          git fetch --unshallow
           git checkout develop
-          git merge master
+          git merge origin/master
           echo "${{ steps.bumpSnapshotVersion.outputs.next-version }}-SNAPSHOT" > VERSION
+          git status
+          git add .
+          git commit -m "${{ needs.calculate-version.outputs.releaseVersion }} -> ${{ steps.bumpSnapshotVersion.outputs.next-version }}"
           git push origin develop
 
   create-release:
