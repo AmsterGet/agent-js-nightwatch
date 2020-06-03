@@ -82,7 +82,7 @@ jobs:
           git push origin develop
 
   create-release:
-    needs: calculate-version, create-tag
+    needs: [calculate-version, create-tag]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
