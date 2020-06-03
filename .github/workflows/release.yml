@@ -75,7 +75,7 @@ jobs:
           version-fragment: 'bug'
       - name: Update develop with snapshot version
         run: |
-          get fetch
+          git fetch
           git checkout develop
           git merge master
           echo "${{ steps.bumpSnapshotVersion.outputs.next-version }}-SNAPSHOT" > VERSION
