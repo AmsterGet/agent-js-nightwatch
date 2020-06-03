@@ -22,7 +22,7 @@ jobs:
           echo $version;
           echo "::set-output name=version::$version"
           read -r versionFragment<version_fragment
-          echo versionFragment
+          echo $versionFragment
           if [[ "$versionFragment" == "minor" ]]; then
             versionFragment=feature
             echo "Minor version will be used"
@@ -32,7 +32,7 @@ jobs:
             versionFragment=patch
             echo "Patch version will be used"
           fi
-          echo "::set-output name=versionFragment::versionFragment"
+          echo "::set-output name=versionFragment::$versionFragment"
       - name: Bump release version if needed according to version fragment
         if: steps.readVersion.outputs.versionFragment != 'patch'
         id: bumpVersion
