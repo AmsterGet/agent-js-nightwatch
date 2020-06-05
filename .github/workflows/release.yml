@@ -53,8 +53,6 @@ jobs:
           else
             echo "::set-output name=releaseVersion::${{ steps.readVersion.outputs.version }}"
           fi
-      - name: Update VERSION file
-        run: echo "${{ steps.exposeVersion.outputs.releaseVersion }}" > ${{ env.versionFileName }}
 
   create-tag:
     needs: calculate-version
@@ -62,11 +60,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Create tag
+      - name: Configure git
         run: |
           git config --global user.email "reportportal.io"
           git config --global user.name "reportportal.io"
           git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+      - name: Update VERSION file
+        run: |
+          echo "${{ needs.calculate-version.outputs.releaseVersion }}" > ${{ env.versionFileName }}
+          git status
+          git add ${{ env.versionFileName }}
+          git commit -m "Update VERSION file with ${{ needs.calculate-version.outputs.releaseVersion }}"
+      - name: Create tag
+        run: |
           git checkout master
           git tag -a v${{ needs.calculate-version.outputs.releaseVersion }} -m ${{ needs.calculate-version.outputs.releaseVersion }}
           npm version from-git
@@ -75,7 +81,8 @@ jobs:
         run: |
           releaseDate=$(date +'%Y-%m-%d')
           echo "Release date: $releaseDate"
-          echo "## [${{ needs.calculate-version.outputs.releaseVersion }}] - $releaseDate" >> ${{ env.changelogFileName }}
+          versionInfo="## [${{ needs.calculate-version.outputs.releaseVersion }}] - $releaseDate"
+          sed -i '1s/^/'"$versionInfo"'\n/' ${{ env.changelogFileName }}
           git status
           git add ${{ env.changelogFileName }}
           git commit -m "Mention ${{ needs.calculate-version.outputs.releaseVersion }} version in changelog file"
@@ -90,11 +97,11 @@ jobs:
         run: |
           git fetch --unshallow
           git checkout develop
-          git merge origin/master
+          git merge master -Xtheirs
           echo "${{ steps.bumpSnapshotVersion.outputs.next-version }}-SNAPSHOT" > ${{ env.versionFileName }}
           git status
           git add ${{ env.versionFileName }}
-          git commit -m "${{ needs.calculate-version.outputs.releaseVersion }} -> ${{ steps.bumpSnapshotVersion.outputs.next-version }}"
+          git commit -m "${{ needs.calculate-version.outputs.releaseVersion }} -> ${{ steps.bumpSnapshotVersion.outputs.next-version }}-SNAPSHOT"
           git push origin develop
 
   create-release:
