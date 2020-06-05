@@ -21,6 +21,8 @@ jobs:
         run: npm run build
       - name: Run tests
         run: npm test
+      - name: Check coverage
+        run: npm run test:coverage
 
   publish-to-npm:
     needs: build
@@ -37,10 +39,6 @@ jobs:
         run: npm ci
       - name: Build the source code
         run: npm run build
-      - name: Run tests
-        run: npm test
-      - name: Check coverage
-        run: npm run test:coverage
       - name: Publish package to npm
         run: npm publish
         env:
@@ -61,10 +59,6 @@ jobs:
         run: npm ci
       - name: Build the source code
         run: npm run build
-      - name: Run tests
-        run: npm test
-      - name: Check coverage
-        run: npm run test:coverage
       - name: Publish package to npm
         run: npm publish
         env:

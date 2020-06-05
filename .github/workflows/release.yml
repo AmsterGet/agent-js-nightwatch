@@ -5,6 +5,10 @@ on:
     branches:
       - master
 
+env:
+  versionFileName: 'VERSION'
+  versionFragmentFileName: 'version_fragment'
+  changelogFileName: 'CHANGELOG.md'
 jobs:
   calculate-version:
     runs-on: ubuntu-latest
@@ -16,12 +20,12 @@ jobs:
       - name: Read version
         id: readVersion
         run: |
-          read -r version<VERSION
+          read -r version < ${{ env.versionFileName }}
           echo "Snapshot version: $version";
           version=$(echo $version | sed 's/-SNAPSHOT//');
           echo $version;
           echo "::set-output name=version::$version"
-          read -r versionFragment<version_fragment
+          read -r versionFragment < ${{ env.versionFragmentFileName }}
           echo $versionFragment
           if [[ "$versionFragment" == "minor" ]]; then
             versionFragment=feature
@@ -50,7 +54,7 @@ jobs:
             echo "::set-output name=releaseVersion::${{ steps.readVersion.outputs.version }}"
           fi
       - name: Update VERSION file
-        run: echo "${{ steps.exposeVersion.outputs.releaseVersion }}" > VERSION
+        run: echo "${{ steps.exposeVersion.outputs.releaseVersion }}" > ${{ env.versionFileName }}
 
   create-tag:
     needs: calculate-version
@@ -67,6 +71,15 @@ jobs:
           git tag -a v${{ needs.calculate-version.outputs.releaseVersion }} -m ${{ needs.calculate-version.outputs.releaseVersion }}
           npm version from-git
           git push origin master
+      - name: Update version in changelog file
+        run: |
+          releaseDate=$(date +'%Y-%m-%d')
+          echo "Release date: $releaseDate"
+          echo "## [${{ needs.calculate-version.outputs.releaseVersion }}] - $releaseDate" >> ${{ env.changelogFileName }}
+          git status
+          git add ${{ env.changelogFileName }}
+          git commit -m "Mention ${{ needs.calculate-version.outputs.releaseVersion }} version in changelog file"
+          git push origin master
       - name: Bump snapshot version
         id: bumpSnapshotVersion
         uses: christian-draeger/increment-semantic-version@1.0.1
@@ -78,9 +91,9 @@ jobs:
           git fetch --unshallow
           git checkout develop
           git merge origin/master
-          echo "${{ steps.bumpSnapshotVersion.outputs.next-version }}-SNAPSHOT" > VERSION
+          echo "${{ steps.bumpSnapshotVersion.outputs.next-version }}-SNAPSHOT" > ${{ env.versionFileName }}
           git status
-          git add .
+          git add ${{ env.versionFileName }}
           git commit -m "${{ needs.calculate-version.outputs.releaseVersion }} -> ${{ steps.bumpSnapshotVersion.outputs.next-version }}"
           git push origin develop
 
@@ -90,6 +103,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Read release notes from changelog file
+        id: readReleaseNotes
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ${{ env.changelogFileName }}
       - name: Create Release
         id: createRelease
         uses: actions/create-release@v1
@@ -98,8 +116,6 @@ jobs:
         with:
           tag_name: v${{ needs.calculate-version.outputs.releaseVersion }}
           release_name: Release v${{ needs.calculate-version.outputs.releaseVersion }}
-          body: |
-            Changes:
-            Use changelog here
+          body: ${{ steps.readReleaseNotes.outputs.content }}
           draft: false
           prerelease: false
