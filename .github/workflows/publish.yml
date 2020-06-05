@@ -42,7 +42,7 @@ jobs:
       - name: Publish package to npm
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_ACCESS_TOKEN}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
   publish-to-gpr:
     needs: build
@@ -59,7 +59,7 @@ jobs:
         run: npm ci
       - name: Build the source code
         run: npm run build
-      - name: Publish package to npm
+      - name: Publish package to github packages
         run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
