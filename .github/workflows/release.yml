@@ -102,7 +102,6 @@ jobs:
           version-fragment: 'bug'
       - name: Update develop with snapshot version
         run: |
-          echo "${{ steps.readChangelogEntry.outputs.log_entry }}"
           git fetch
           git checkout develop
           git merge master -Xtheirs --allow-unrelated-histories
