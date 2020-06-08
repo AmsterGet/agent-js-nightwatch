@@ -1,5 +1,5 @@
 {
-  "name": "amsterget-test-release-agent-package",
+  "name": "@amsterget/test-release-agent-package",
   "version": "4.0.4",
   "description": "Agent for integration Nightwatch with ReportPortal.",
   "main": "build/index.js",

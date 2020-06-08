@@ -34,7 +34,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-          registry-url: https://registry.npmjs.org/
+          registry-url: 'https://registry.npmjs.org'
       - name: Clean install of node dependencies
         run: npm ci
       - name: Build the source code
@@ -54,7 +54,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-          registry-url: https://npm.pkg.github.com/
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@amsterget'
       - name: Clean install of node dependencies
         run: npm ci
       - name: Build the source code
