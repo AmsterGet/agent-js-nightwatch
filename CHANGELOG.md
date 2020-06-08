@@ -1,5 +1,12 @@
+### Added
+- Blablabla
+- sadadsasad
+
 ### Changed
 - Release pipeline improvements
+
+### Deprecated
+- Blablabla
 
 ## [4.0.0] - 2020-06-08
 ### Added
