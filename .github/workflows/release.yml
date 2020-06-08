@@ -83,7 +83,7 @@ jobs:
           releaseDate=$(date +'%Y-%m-%d')
           echo "Release date: $releaseDate"
           versionInfo="## [${{ needs.calculate-version.outputs.releaseVersion }}] - $releaseDate"
-          sed -i '1s/^/'"$versionInfo"'\n/' ${{ env.changelogFileName }}
+          sed -i '1s/^/\n'"$versionInfo"'\n/' ${{ env.changelogFileName }}
           git status
           git add ${{ env.changelogFileName }}
           git commit -m "Mention ${{ needs.calculate-version.outputs.releaseVersion }} version in changelog file"
