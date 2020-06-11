@@ -1,3 +1,5 @@
+### Added
+- Proper github packages publishing
 
 ## [4.0.7] - 2020-06-11
 

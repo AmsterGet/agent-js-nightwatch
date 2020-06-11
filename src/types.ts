@@ -15,7 +15,7 @@
  *
  */
 
-declare module 'reportportal-client' {
+declare module '@reportportal/client-javascript' {
     export default class {
         constructor(config: any, agentInfo?: any);
 

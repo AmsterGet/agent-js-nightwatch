@@ -16,7 +16,7 @@
  */
 
 // @ts-ignore
-import RPClient from 'reportportal-client';
+import RPClient from '@reportportal/client-javascript';
 import { Storage } from '../../../realTimeReporter/storage';
 import * as IPCServer from '../../../realTimeReporter/ipc/server';
 import { RealTimeReporter } from '../../../realTimeReporter';
