@@ -15,7 +15,7 @@
  *
  */
 
-import RPClient from 'reportportal-client';
+import RPClient from '@reportportal/client-javascript';
 import { getAgentInfo } from '../utils';
 import { EVENTS, LOG_LEVELS, STATUSES } from '../constants';
 import {

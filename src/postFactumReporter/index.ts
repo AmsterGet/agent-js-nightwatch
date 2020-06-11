@@ -16,7 +16,7 @@
  */
 
 import moment from 'moment';
-import RPClient from 'reportportal-client';
+import RPClient from '@reportportal/client-javascript';
 import { AgentOptions, ReportPortalConfig } from '../models';
 import { buildCodeRef, getSystemAttributes, getLastItem } from '../utils';
 import { STATUSES, LOG_LEVELS, TEST_ITEM_TYPES, EVENTS } from '../constants';
