@@ -1,4 +1,6 @@
 
+## [4.0.7] - 2020-06-11
+
 ## [4.0.6] - 2020-06-08
 ### Changed
 - Release pipeline improvements
