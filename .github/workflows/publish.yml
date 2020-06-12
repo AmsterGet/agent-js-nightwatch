@@ -6,17 +6,19 @@ on:
       - published
 
 jobs:
-  publish-to-npm-and-gpr:
+  publish-to-npm:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      # Publish to Npm
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-          registry-url: 'https://registry.npmjs.org'
+      - name: Clean install of node dependencies
+        run: npm ci
+      - name: Build the source code
+        run: npm run build
       - name: Publish to npm
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
@@ -24,13 +26,20 @@ jobs:
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
-      # Publish to GitHub Packages Registry
+
+  publish-to-gpr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-          registry-url: https://npm.pkg.github.com/
-          scope: '@amsterget'
+      - name: Clean install of node dependencies
+        run: npm ci
+      - name: Build the source code
+        run: npm run build
       - name: Publish to GitHub Packages Registry
         run: |
           npm config set //npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN
