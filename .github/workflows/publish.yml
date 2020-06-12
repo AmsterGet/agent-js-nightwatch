@@ -6,24 +6,7 @@ on:
       - published
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-      - name: Clean install of node dependencies
-        run: npm ci
-      - name: Run tests
-        run: npm test
-      - name: Check coverage
-        run: npm run test:coverage
-
   publish-to-gpr:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -37,6 +20,8 @@ jobs:
       #  run: npm config set registry https://registry.npmjs.org
       - name: Clean install of node dependencies
         run: npm ci
+      - name: Use proper registry
+        run: npm config set registry "https://npm.pkg.github.com/"
       - name: Publish package to github packages
         run: npm publish --@amsterget:registry=https://npm.pkg.github.com/
         env:
