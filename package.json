@@ -1,6 +1,6 @@
 {
   "name": "@amsterget/test-agent-nightw-package",
-  "version": "4.0.23",
+  "version": "4.0.24",
   "description": "Agent for integration Nightwatch with ReportPortal.",
   "main": "build/index.js",
   "license": "Apache-2.0",
