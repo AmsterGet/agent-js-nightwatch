@@ -1,6 +1,6 @@
 {
   "name": "test-nw-agent-package",
-  "version": "4.0.15",
+  "version": "4.0.16",
   "description": "Agent for integration Nightwatch with ReportPortal.",
   "main": "build/index.js",
   "license": "Apache-2.0",
