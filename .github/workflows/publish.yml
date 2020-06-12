@@ -38,6 +38,6 @@ jobs:
       - name: Clean install of node dependencies
         run: npm ci
       - name: Publish package to github packages
-        run: npm publish --@amsterget:registry=https://npm.pkg.github.com/ --access public
+        run: npm publish --@amsterget:registry=https://npm.pkg.github.com/
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
