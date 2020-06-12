@@ -32,15 +32,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - name: Specify registry to install dependencies
-        run: npm config set registry https://registry.npmjs.org
+          registry-url: 'https://registry.npmjs.org'
+      #- name: Specify registry to install dependencies
+      #  run: npm config set registry https://registry.npmjs.org
       - name: Clean install of node dependencies
         run: npm ci
-      - name: Specify registry to publish package
-        run: |
-          npm config set registry https://npm.pkg.github.com
-          npm config set scope @reportportal
       - name: Publish package to github packages
-        run: npm publish --access public
+        run: npm publish --@amsterget:registry=https://npm.pkg.github.com/ --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
