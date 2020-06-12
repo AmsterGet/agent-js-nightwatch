@@ -1,5 +1,5 @@
 {
-  "name": "test-nw-agent-package",
+  "name": "test-agent-nw-package",
   "version": "4.0.17",
   "description": "Agent for integration Nightwatch with ReportPortal.",
   "main": "build/index.js",

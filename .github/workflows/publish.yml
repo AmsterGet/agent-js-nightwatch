@@ -36,12 +36,11 @@ jobs:
         with:
           node-version: 12.x
           registry-url: 'https://registry.npmjs.org'
-          scope: '@amsterget'
       - name: Clean install of node dependencies
         run: npm ci
       - name: Build the source code
         run: npm run build
       - name: Publish package to github packages
-        run: npm publish --@getify:registry=https://npm.pkg.github.com
+        run: npm publish --@amsterget:registry=https://npm.pkg.github.com
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
